@@ -1,0 +1,1483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>LinkedIn League</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#FFF9F0;--card:#FFFFFF;--navy:#1B2A5E;
+  --purple:#7C3AED;--green:#16A34A;--coral:#DC2626;
+  --orange:#EA580C;--tango:#2563EB;
+  --gold:#F59E0B;--silver:#94A3B8;--bronze:#B45309;
+  --ninad:#7C3AED;--akshay:#16A34A;--ajay:#DC2626;
+  --border:#E8E0D8;--text:#1e1b18;--text2:#6B5E4E;--text3:#A89880;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 15% 15%,rgba(124,58,237,0.07) 0%,transparent 40%),radial-gradient(ellipse at 85% 20%,rgba(22,163,74,0.06) 0%,transparent 40%),radial-gradient(ellipse at 50% 85%,rgba(234,88,12,0.06) 0%,transparent 40%);pointer-events:none;z-index:0}
+.floatie{position:fixed;pointer-events:none;z-index:0;opacity:0.12;font-size:28px;animation:float 6s ease-in-out infinite}
+.f1{top:8%;left:5%;animation-delay:0s}.f2{top:20%;right:7%;animation-delay:1.5s}.f3{top:55%;left:3%;animation-delay:3s}.f4{top:70%;right:5%;animation-delay:0.8s}.f5{bottom:15%;left:8%;animation-delay:4s}
+@keyframes float{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-14px) rotate(8deg)}}
+.app{position:relative;z-index:1;max-width:860px;margin:0 auto;padding:0 16px 80px}
+
+/* HEADER */
+.header{padding:28px 0 16px;text-align:center;animation:popIn 0.7s cubic-bezier(0.34,1.56,0.64,1)}
+.header-stars{font-size:16px;letter-spacing:8px;margin-bottom:8px;display:block;animation:twinkle 2s infinite;color:var(--gold)}
+@keyframes twinkle{0%,100%{opacity:1}50%{opacity:0.4}}
+.header h1{font-family:'Fredoka One',cursive;font-size:clamp(36px,9vw,68px);line-height:1;letter-spacing:0.02em;margin-bottom:8px;background:linear-gradient(135deg,#7C3AED 0%,#2563EB 35%,#16A34A 65%,#EA580C 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.header-sub{display:inline-flex;align-items:center;gap:6px;background:white;border:2.5px solid var(--border);border-radius:100px;padding:6px 18px;font-size:13px;font-weight:700;color:var(--text2);box-shadow:3px 3px 0 var(--border)}
+.dot-sep{color:var(--text3)}
+.sync-bar{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:10px;font-size:12px;font-weight:700;color:var(--text3)}
+.sync-dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse-dot 2s infinite}
+@keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.8)}}
+.sync-dot.offline{background:var(--coral);animation:none}
+
+/* TABS */
+.tabs{display:flex;gap:4px;background:white;border:2.5px solid var(--border);border-radius:20px;padding:5px;margin-bottom:24px;box-shadow:4px 4px 0 var(--border);overflow-x:auto}
+.tab-btn{flex:1;min-width:72px;padding:10px 6px;font-size:12px;font-weight:800;font-family:'Nunito',sans-serif;background:transparent;border:none;border-radius:15px;cursor:pointer;color:var(--text3);transition:all 0.2s;white-space:nowrap}
+.tab-btn.active{color:white;box-shadow:2px 2px 0 rgba(0,0,0,0.12)}
+.tab-btn:nth-child(1).active{background:var(--purple)}
+.tab-btn:nth-child(2).active{background:var(--green)}
+.tab-btn:nth-child(3).active{background:#0EA5E9}
+.tab-btn:nth-child(4).active{background:#7C3AED}
+.tab-btn:nth-child(5).active{background:#0F766E}
+.tab-btn:nth-child(6).active{background:#B45309}
+.tab-panel{display:none;animation:popIn 0.35s cubic-bezier(0.34,1.56,0.64,1)}
+.tab-panel.active{display:block}
+@keyframes popIn{from{opacity:0;transform:scale(0.95)}to{opacity:1;transform:scale(1)}}
+
+/* UPLOAD */
+@keyframes shimmer{0%{background-position:200% center}100%{background-position:-200% center}}
+@keyframes bounce{0%,100%{transform:translateY(0) scale(1)}40%{transform:translateY(-10px) scale(1.1)}60%{transform:translateY(-6px) scale(1.05)}}
+@keyframes borderSpin{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+@keyframes pulse-ring{0%{transform:scale(0.9);opacity:0.6}70%{transform:scale(1.15);opacity:0}100%{transform:scale(1.15);opacity:0}}
+.upload-zone{position:relative;cursor:pointer;margin-bottom:20px;border-radius:26px;padding:3px;background:linear-gradient(135deg,#7C3AED,#2563EB,#16A34A,#EA580C,#DC2626,#7C3AED);background-size:300% 300%;animation:borderSpin 4s ease infinite;box-shadow:0 6px 30px rgba(124,58,237,0.18);transition:transform 0.2s,box-shadow 0.2s}
+.upload-zone:hover{transform:translateY(-3px) scale(1.01);box-shadow:0 12px 40px rgba(124,58,237,0.28)}
+.upload-zone input{display:none}
+.upload-zone-inner{background:#FFFBF5;border-radius:23px;padding:28px 20px 22px;text-align:center;position:relative;overflow:hidden}
+.uz-camera-wrap{position:relative;display:inline-block;margin-bottom:12px}
+.uz-pulse{position:absolute;inset:-8px;border-radius:50%;border:3px solid rgba(124,58,237,0.35);animation:pulse-ring 2s ease-out infinite}
+.uz-pulse2{position:absolute;inset:-8px;border-radius:50%;border:3px solid rgba(124,58,237,0.2);animation:pulse-ring 2s ease-out infinite 0.6s}
+.uz-camera-bg{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#7C3AED,#A855F7);display:flex;align-items:center;justify-content:center;font-size:32px;box-shadow:0 4px 16px rgba(124,58,237,0.35);position:relative;z-index:1}
+.uz-title{font-family:'Fredoka One',cursive;font-size:20px;letter-spacing:0.02em;background:linear-gradient(135deg,#7C3AED 0%,#2563EB 50%,#EA580C 100%);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 3s linear infinite;margin-bottom:4px}
+.uz-sub{font-size:12px;color:var(--text2);font-weight:600;margin-bottom:14px}
+.uz-btn{display:inline-flex;align-items:center;gap:7px;background:linear-gradient(135deg,#7C3AED,#A855F7);color:white;border-radius:100px;padding:9px 22px;font-size:13px;font-weight:800;font-family:'Nunito',sans-serif;box-shadow:0 3px 12px rgba(124,58,237,0.35);margin-bottom:14px}
+.game-pills{display:flex;flex-wrap:wrap;gap:5px;justify-content:center}
+.game-pill{padding:4px 12px;border-radius:100px;font-size:11px;font-weight:800;border:2px solid transparent}
+.pill-sudoku{background:rgba(22,163,74,0.1);color:var(--green);border-color:rgba(22,163,74,0.25)}
+.pill-zip{background:rgba(202,138,4,0.1);color:#854D0E;border-color:rgba(202,138,4,0.25)}
+.pill-patches{background:rgba(22,163,74,0.08);color:#166534;border-color:rgba(22,163,74,0.2)}
+.pill-tango{background:rgba(79,70,229,0.1);color:#3730A3;border-color:rgba(79,70,229,0.25)}
+.pill-queens{background:rgba(124,58,237,0.1);color:var(--purple);border-color:rgba(124,58,237,0.25)}
+.pill-done{background:rgba(0,0,0,0.05);color:var(--text3);border-color:rgba(0,0,0,0.08);text-decoration:line-through;opacity:0.5}
+
+/* SPINNER */
+.spinner-wrap{display:none;text-align:center;padding:32px}
+.spinner{width:40px;height:40px;border:4px solid var(--border);border-top-color:var(--purple);border-radius:50%;animation:spin 0.7s linear infinite;margin:0 auto 10px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spinner-wrap p{font-size:13px;color:var(--text2);font-weight:700}
+
+/* LOADING OVERLAY */
+.loading-overlay{position:fixed;inset:0;background:rgba(255,249,240,0.92);z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px}
+.loading-overlay .spinner{width:50px;height:50px;border-width:5px}
+.loading-overlay p{font-family:'Fredoka One',cursive;font-size:18px;color:var(--navy)}
+
+/* PREVIEW */
+.preview-card{display:none;background:white;border:2.5px solid var(--border);border-radius:22px;padding:20px;margin-bottom:20px;box-shadow:5px 5px 0 var(--border)}
+.preview-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.preview-top h3{font-family:'Fredoka One',cursive;font-size:16px;color:var(--navy)}
+.game-badge-preview{display:inline-block;padding:5px 14px;border-radius:100px;font-size:12px;font-weight:800;border:2px solid transparent}
+.place-row{display:flex;align-items:center;gap:10px;margin-bottom:9px}
+.place-dot{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0;border:2.5px solid transparent}
+.pd1{background:rgba(245,158,11,0.15);color:var(--gold);border-color:rgba(245,158,11,0.4)}
+.pd2{background:rgba(148,163,184,0.15);color:var(--silver);border-color:rgba(148,163,184,0.4)}
+.pd3{background:rgba(180,83,9,0.15);color:var(--bronze);border-color:rgba(180,83,9,0.35)}
+.place-row input{flex:1;padding:8px 12px;font-size:13px;font-weight:700;font-family:'Nunito',sans-serif;border:2px solid var(--border);border-radius:12px;background:var(--bg);color:var(--text);outline:none;transition:border-color 0.2s}
+.place-row input:focus{border-color:var(--purple)}
+.pts-tag{font-size:12px;color:var(--text2);min-width:42px;text-align:right;font-weight:800}
+.tie-section{margin-bottom:12px;display:flex;align-items:center;gap:10px}
+.tie-section label{font-size:12px;color:var(--text2);font-weight:700}
+.tie-section select{padding:6px 10px;font-size:12px;font-family:'Nunito',sans-serif;font-weight:700;border:2px solid var(--border);border-radius:10px;background:white;color:var(--text);outline:none}
+.btn-row{display:flex;gap:8px;margin-top:14px}
+.btn{padding:10px 20px;border-radius:13px;font-size:13px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;border:2.5px solid var(--border);background:white;color:var(--text2);transition:all 0.18s;box-shadow:3px 3px 0 var(--border)}
+.btn:hover{transform:translateY(-2px)}
+.btn-primary{background:var(--purple);color:white;border-color:rgba(80,20,180,0.4);box-shadow:3px 3px 0 rgba(80,20,180,0.3)}
+.btn-danger{border-color:rgba(220,38,38,0.3);color:var(--coral)}
+.err-msg{font-size:12px;color:var(--coral);background:rgba(220,38,38,0.08);border:2px solid rgba(220,38,38,0.2);border-radius:10px;padding:8px 12px;margin-bottom:12px;font-weight:700;display:none}
+
+/* PODIUM */
+.podium-wrap{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:24px}
+.podium-card{background:white;border:2.5px solid var(--border);border-radius:22px;padding:20px 14px;text-align:center;box-shadow:4px 4px 0 var(--border);transition:transform 0.2s;animation:popIn 0.5s cubic-bezier(0.34,1.56,0.64,1) both}
+.podium-card:hover{transform:translateY(-4px)}
+.podium-card.p1{border-color:rgba(245,158,11,0.4);box-shadow:4px 4px 0 rgba(245,158,11,0.2)}
+.podium-medal{font-size:28px;margin-bottom:10px;display:block}
+.podium-name{font-family:'Fredoka One',cursive;font-size:clamp(16px,4vw,22px);margin-bottom:2px}
+.name-ninad{color:var(--ninad)}.name-akshay{color:var(--akshay)}.name-ajay{color:var(--ajay)}
+.podium-pts{font-family:'Fredoka One',cursive;font-size:clamp(28px,6vw,42px);line-height:1.1;margin-bottom:2px}
+.podium-pts-label{font-size:11px;color:var(--text3);font-weight:800;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px}
+.podium-badge-row{display:flex;flex-wrap:wrap;gap:4px;justify-content:center}
+.stat-badge{padding:3px 9px;border-radius:100px;font-size:11px;font-weight:800;border:2px solid transparent}
+.badge-wins-ninad{background:rgba(124,58,237,0.1);color:var(--ninad);border-color:rgba(124,58,237,0.2)}
+.badge-wins-akshay{background:rgba(22,163,74,0.1);color:var(--akshay);border-color:rgba(22,163,74,0.2)}
+.badge-wins-ajay{background:rgba(220,38,38,0.1);color:var(--ajay);border-color:rgba(220,38,38,0.2)}
+.badge-games{background:rgba(0,0,0,0.04);color:var(--text2);border-color:rgba(0,0,0,0.06)}
+
+/* SECTION HEADER */
+.section-header{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.section-header h2{font-family:'Fredoka One',cursive;font-size:18px;color:var(--navy)}
+.sh-line{flex:1;height:2px;background:repeating-linear-gradient(90deg,var(--border) 0,var(--border) 6px,transparent 6px,transparent 12px)}
+
+/* BY GAME */
+.bygame-grid{display:flex;flex-direction:column;gap:12px}
+.game-row-card{background:white;border:2.5px solid var(--border);border-radius:20px;overflow:hidden;box-shadow:4px 4px 0 var(--border);animation:popIn 0.4s cubic-bezier(0.34,1.56,0.64,1) both}
+.gr-header{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:2px solid var(--border)}
+.gr-icon{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;border:2px solid transparent;flex-shrink:0}
+.gr-name{font-family:'Fredoka One',cursive;font-size:16px}
+.gr-total{margin-left:auto;font-size:11px;color:var(--text3);font-weight:700}
+.gr-players{display:grid;grid-template-columns:1fr 1fr 1fr}
+.gr-player{padding:12px 14px;text-align:center;border-right:2px solid var(--border)}
+.gr-player:last-child{border-right:none}
+.gr-player-name{font-size:12px;font-weight:800;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.04em}
+.gr-wins{font-family:'Fredoka One',cursive;font-size:28px;line-height:1}
+.gr-wins-label{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-top:1px}
+.gr-rank-badge{display:inline-block;margin-top:5px;padding:2px 8px;border-radius:100px;font-size:10px;font-weight:800;border:2px solid transparent}
+
+/* POINTS TAB */
+.pts-tab-grid{display:flex;flex-direction:column;gap:14px}
+.pts-player-card{background:white;border:2.5px solid var(--border);border-radius:20px;overflow:hidden;box-shadow:4px 4px 0 var(--border);animation:popIn 0.4s cubic-bezier(0.34,1.56,0.64,1) both}
+.pts-player-header{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:2px solid var(--border)}
+.pts-player-name{font-family:'Fredoka One',cursive;font-size:20px}
+.pts-player-total{font-family:'Fredoka One',cursive;font-size:26px}
+.pts-player-total-label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.07em;color:var(--text3);text-align:right;margin-top:1px}
+.pts-games-grid{display:grid;grid-template-columns:repeat(5,1fr)}
+.pts-game-cell{padding:12px 8px;text-align:center;border-right:2px solid var(--border)}
+.pts-game-cell:last-child{border-right:none}
+.pts-game-em{font-size:18px;margin-bottom:4px;display:block}
+.pts-game-name{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:0.04em;color:var(--text3);margin-bottom:5px}
+.pts-game-val{font-family:'Fredoka One',cursive;font-size:22px;line-height:1}
+.pts-game-label{font-size:9px;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:0.04em;margin-top:1px}
+
+/* WEEKLY */
+.week-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:18px;gap:12px;flex-wrap:wrap}
+.week-title-wrap h2{font-family:'Fredoka One',cursive;font-size:22px;color:var(--navy)}
+.week-title-wrap p{font-size:12px;color:var(--text3);font-weight:700;margin-top:2px}
+.wk-cards{display:flex;flex-direction:column;gap:10px}
+.wk-card{background:white;border:2.5px solid var(--border);border-radius:20px;padding:16px 18px;display:flex;align-items:center;gap:14px;box-shadow:4px 4px 0 var(--border);transition:transform 0.2s;animation:popIn 0.45s cubic-bezier(0.34,1.56,0.64,1) both}
+.wk-card:hover{transform:translateY(-3px)}
+.wk-card.wk1{border-color:rgba(245,158,11,0.4);box-shadow:4px 4px 0 rgba(245,158,11,0.15)}
+.wk-medal{font-size:28px;flex-shrink:0}
+.wk-info{flex:1}
+.wk-name{font-family:'Fredoka One',cursive;font-size:20px;margin-bottom:3px}
+.wk-badges{display:flex;gap:5px;flex-wrap:wrap}
+.wk-pts{font-family:'Fredoka One',cursive;font-size:32px}
+
+/* SEASON TAB */
+.season-week{background:white;border:2.5px solid var(--border);border-radius:20px;overflow:hidden;box-shadow:4px 4px 0 var(--border);margin-bottom:14px;animation:popIn 0.4s cubic-bezier(0.34,1.56,0.64,1) both}
+.season-week-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:2px solid var(--border);background:linear-gradient(135deg,rgba(124,58,237,0.06),rgba(37,99,235,0.04))}
+.season-week-title{font-family:'Fredoka One',cursive;font-size:16px;color:var(--navy)}
+.season-week-dates{font-size:11px;color:var(--text3);font-weight:700}
+.season-players-grid{display:grid;grid-template-columns:1fr 1fr 1fr}
+.season-player-cell{padding:14px 10px;text-align:center;border-right:2px solid var(--border)}
+.season-player-cell:last-child{border-right:none}
+.season-player-name{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:6px}
+.season-player-pts{font-family:'Fredoka One',cursive;font-size:26px;line-height:1;margin-bottom:2px}
+.season-player-pts-label{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px}
+.season-player-wins{display:inline-flex;align-items:center;gap:3px;padding:3px 8px;border-radius:100px;font-size:11px;font-weight:800;border:2px solid transparent}
+.season-winner-badge{display:inline-block;padding:3px 10px;border-radius:100px;font-size:10px;font-weight:800;margin-top:4px;border:2px solid transparent}
+
+/* MANUAL */
+.manual-wrap{background:white;border:2.5px solid var(--border);border-radius:24px;box-shadow:4px 4px 0 var(--border);overflow:hidden}
+.manual-header{padding:20px 22px 16px;border-bottom:2px solid var(--border);background:linear-gradient(135deg,rgba(15,118,110,0.06),rgba(37,99,235,0.04))}
+.manual-header-icon{font-size:28px;display:block;margin-bottom:6px}
+.manual-header h2{font-family:'Fredoka One',cursive;font-size:20px;color:var(--navy);margin-bottom:2px}
+.manual-body{padding:20px 22px}
+.manual-field{margin-bottom:16px}
+.manual-label{font-size:12px;font-weight:800;color:var(--text2);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:7px;display:flex;align-items:center;gap:6px}
+.manual-select{width:100%;padding:11px 14px;font-size:14px;font-weight:700;font-family:'Nunito',sans-serif;border:2.5px solid var(--border);border-radius:14px;background:var(--bg);color:var(--text);outline:none;cursor:pointer;transition:border-color 0.2s}
+.manual-select:focus{border-color:#0F766E}
+.places-grid{display:flex;flex-direction:column;gap:10px}
+.place-manual-row{display:flex;align-items:center;gap:10px}
+.pm-badge{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;flex-shrink:0;font-family:'Fredoka One',cursive;border:2.5px solid transparent}
+.pm1{background:rgba(245,158,11,0.12);color:var(--gold);border-color:rgba(245,158,11,0.3)}
+.pm2{background:rgba(148,163,184,0.15);color:var(--silver);border-color:rgba(148,163,184,0.35)}
+.pm3{background:rgba(180,83,9,0.12);color:var(--bronze);border-color:rgba(180,83,9,0.3)}
+.pm-select{flex:1;padding:9px 12px;font-size:13px;font-weight:700;font-family:'Nunito',sans-serif;border:2.5px solid var(--border);border-radius:12px;background:var(--bg);color:var(--text);outline:none;transition:border-color 0.2s;cursor:pointer}
+.pm-select:focus{border-color:#0F766E}
+.pm-pts{font-size:12px;font-weight:800;color:var(--text3);min-width:40px;text-align:right}
+.manual-divider{display:flex;align-items:center;gap:8px;margin:18px 0}
+.manual-divider span{font-size:12px;color:var(--text3);font-weight:700;white-space:nowrap}
+.manual-divider-line{flex:1;height:1.5px;background:var(--border)}
+.manual-save-btn{width:100%;padding:13px;border-radius:16px;font-family:'Fredoka One',cursive;font-size:18px;letter-spacing:0.03em;cursor:pointer;border:none;color:white;background:linear-gradient(135deg,#0F766E,#0EA5E9);box-shadow:0 4px 14px rgba(15,118,110,0.3);transition:all 0.2s}
+.manual-save-btn:hover{transform:translateY(-2px)}
+.manual-err{font-size:12px;color:var(--coral);background:rgba(220,38,38,0.08);border:2px solid rgba(220,38,38,0.2);border-radius:10px;padding:8px 12px;margin-bottom:12px;font-weight:700;display:none}
+.manual-success{font-size:13px;color:var(--green);background:rgba(22,163,74,0.08);border:2px solid rgba(22,163,74,0.2);border-radius:10px;padding:10px 14px;margin-top:12px;font-weight:700;display:none;text-align:center;font-family:'Fredoka One',cursive}
+
+/* RULES */
+.rules-hero{text-align:center;padding:22px 16px 18px;background:white;border:2.5px solid var(--border);border-radius:24px;box-shadow:4px 4px 0 var(--border);margin-bottom:18px}
+.rules-hero-icon{font-size:44px;display:block;margin-bottom:8px}
+.rules-hero-title{font-family:'Fredoka One',cursive;font-size:24px;margin-bottom:4px;background:linear-gradient(135deg,#7C3AED,#2563EB,#EA580C);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.rules-hero-sub{font-size:12px;color:var(--text2);font-weight:700}
+.rules-list{display:flex;flex-direction:column;gap:10px}
+.rule-card{display:flex;align-items:flex-start;gap:14px;background:white;border:2.5px solid var(--border);border-radius:20px;padding:16px 18px;box-shadow:4px 4px 0 var(--border);transition:transform 0.2s}
+.rule-card:hover{transform:translateY(-2px)}
+.rule-card:nth-child(1){border-left:5px solid var(--gold)}
+.rule-card:nth-child(2){border-left:5px solid var(--silver)}
+.rule-card:nth-child(3){border-left:5px solid var(--bronze)}
+.rule-card:nth-child(4){border-left:5px solid var(--tango)}
+.rule-card:nth-child(5){border-left:5px solid var(--purple)}
+.rule-card:nth-child(6){border-left:5px solid var(--coral)}
+.rule-card:nth-child(7){border-left:5px solid var(--green)}
+.rule-num{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:16px;flex-shrink:0;border:2.5px solid transparent}
+.rn1{background:rgba(245,158,11,0.12);color:var(--gold);border-color:rgba(245,158,11,0.3)}
+.rn2{background:rgba(148,163,184,0.15);color:var(--silver);border-color:rgba(148,163,184,0.35)}
+.rn3{background:rgba(180,83,9,0.12);color:var(--bronze);border-color:rgba(180,83,9,0.3)}
+.rn4{background:rgba(37,99,235,0.1);color:var(--tango);border-color:rgba(37,99,235,0.25)}
+.rn5{background:rgba(124,58,237,0.1);color:var(--purple);border-color:rgba(124,58,237,0.25)}
+.rn6{background:rgba(220,38,38,0.1);color:var(--coral);border-color:rgba(220,38,38,0.25)}
+.rn7{background:rgba(22,163,74,0.1);color:var(--green);border-color:rgba(22,163,74,0.25)}
+.rule-body{flex:1}
+.rule-title{font-family:'Fredoka One',cursive;font-size:15px;margin-bottom:4px;color:var(--navy)}
+.rule-desc{font-size:13px;color:var(--text2);font-weight:600;line-height:1.5}
+.pts-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.pts-chip{padding:4px 12px;border-radius:100px;font-size:12px;font-weight:800;border:2px solid transparent;font-family:'Fredoka One',cursive}
+.chip-gold{background:rgba(245,158,11,0.12);color:#B45309;border-color:rgba(245,158,11,0.3)}
+.chip-silver{background:rgba(148,163,184,0.15);color:#4B5563;border-color:rgba(148,163,184,0.35)}
+.chip-bronze{background:rgba(180,83,9,0.1);color:var(--bronze);border-color:rgba(180,83,9,0.25)}
+.chip-blue{background:rgba(37,99,235,0.1);color:var(--tango);border-color:rgba(37,99,235,0.25)}
+.chip-purple{background:rgba(124,58,237,0.1);color:var(--purple);border-color:rgba(124,58,237,0.25)}
+
+/* UPLOADED TODAY */
+#uploadedToday{display:none;margin-bottom:20px;border-radius:22px;padding:3px;background:linear-gradient(135deg,#16A34A,#22C55E,#0EA5E9);box-shadow:0 4px 18px rgba(22,163,74,0.2)}
+.ut-inner{background:#f0fdf4;border-radius:19px;padding:20px;text-align:center}
+
+.empty-state{text-align:center;padding:44px 20px;color:var(--text3)}
+/* LOCKED STATE */
+.locked-card{background:white;border:2.5px solid var(--border);border-radius:24px;padding:32px 20px;text-align:center;box-shadow:4px 4px 0 var(--border);margin-bottom:20px}
+.locked-icon{font-size:48px;margin-bottom:12px;display:block}
+.locked-title{font-family:'Fredoka One',cursive;font-size:22px;color:var(--navy);margin-bottom:6px}
+.locked-sub{font-size:13px;color:var(--text2);font-weight:600;margin-bottom:20px}
+.countdown-wrap{display:flex;justify-content:center;gap:12px}
+.countdown-box{background:var(--bg);border:2.5px solid var(--border);border-radius:14px;padding:12px 16px;min-width:64px;text-align:center;box-shadow:3px 3px 0 var(--border)}
+.countdown-num{font-family:'Fredoka One',cursive;font-size:28px;color:var(--purple);line-height:1}
+.countdown-label{font-size:10px;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-top:2px}
+.es-icon{font-size:44px;margin-bottom:10px;display:block}
+.es-text{font-family:'Fredoka One',cursive;font-size:16px}
+
+@media(max-width:500px){
+  .podium-wrap{grid-template-columns:1fr}
+  .tabs{gap:3px}
+  .tab-btn{font-size:11px;padding:9px 4px;min-width:60px}
+}
+</style>
+</head>
+<body>
+<span class="floatie f1">⭐</span>
+<span class="floatie f2">🎮</span>
+<span class="floatie f3">🧩</span>
+<span class="floatie f4">🏆</span>
+<span class="floatie f5">🎯</span>
+
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner"></div>
+  <p>Loading LinkedIn League...</p>
+</div>
+
+<div class="app">
+  <div class="header">
+    <span class="header-stars">★ ★ ★ ★ ★</span>
+    <h1>LinkedIn League</h1>
+    <div class="header-sub">
+      <span style="color:var(--ninad);font-family:'Fredoka One',cursive">Ninad</span>
+      <span class="dot-sep">·</span>
+      <span style="color:var(--akshay);font-family:'Fredoka One',cursive">Akshay</span>
+      <span class="dot-sep">·</span>
+      <span style="color:var(--ajay);font-family:'Fredoka One',cursive">Ajay</span>
+    </div>
+    <div class="sync-bar">
+      <div class="sync-dot" id="syncDot"></div>
+      <span id="syncStatus">Connecting...</span>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('overall',this)">🏅 Leaderboard</button>
+    <button class="tab-btn" onclick="switchTab('bygame',this)">🎮 By Game</button>
+    <button class="tab-btn" onclick="switchTab('points',this)">⭐ Points</button>
+    <button class="tab-btn" onclick="switchTab('weekhist',this)">📊 Season</button>
+    <button class="tab-btn" onclick="switchTab('upload',this)">📸 Upload</button>
+    <button class="tab-btn" onclick="switchTab('rules',this)">📜 Rules</button>
+  </div>
+
+  <!-- LEADERBOARD TAB -->
+  <div id="tab-overall" class="tab-panel active">
+    <div class="podium-wrap" id="podiumEl"></div>
+    <div id="resultsSection" style="display:none">
+      <div class="section-header"><h2>Recent Results</h2><div class="sh-line"></div></div>
+      <div id="resultsList"></div>
+    </div>
+  </div>
+
+  <!-- BY GAME TAB -->
+  <div id="tab-bygame" class="tab-panel">
+    <div class="section-header"><h2>Wins by Game</h2><div class="sh-line"></div></div>
+    <div class="bygame-grid" id="bygameGrid"></div>
+  </div>
+
+  <!-- POINTS TAB -->
+  <div id="tab-points" class="tab-panel">
+    <div class="section-header"><h2>Points by Game</h2><div class="sh-line"></div></div>
+    <div class="pts-tab-grid" id="ptsTabGrid"></div>
+  </div>
+
+  <!-- UPLOAD TAB -->
+  <div id="tab-upload" class="tab-panel">
+    <div class="err-msg" id="errMsg"></div>
+
+    <div class="locked-card" id="lockedCard" style="display:none">
+      <span class="locked-icon">🔒</span>
+      <div class="locked-title">Games haven't unlocked yet!</div>
+      <div class="locked-sub">LinkedIn games unlock at 12:30 PM IST every day.<br>Come back then to upload your results!</div>
+      <div id="lockedPills" style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:14px 0"></div>
+      <div class="countdown-wrap">
+        <div class="countdown-box"><div class="countdown-num" id="cdHours">00</div><div class="countdown-label">Hours</div></div>
+        <div class="countdown-box"><div class="countdown-num" id="cdMins">00</div><div class="countdown-label">Mins</div></div>
+        <div class="countdown-box"><div class="countdown-num" id="cdSecs">00</div><div class="countdown-label">Secs</div></div>
+      </div>
+      <div id="lockedUploadBtn" style="display:none;margin-top:14px">
+        <label style="display:inline-flex;align-items:center;gap:6px;background:var(--purple);color:white;border-radius:100px;padding:9px 20px;font-size:13px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;box-shadow:0 3px 10px rgba(124,58,237,0.3)">
+          <input type="file" accept="image/jpeg,image/jpg,image/png,image/gif,image/webp,image/heic,image/heif" onchange="handleUpload(event)" style="display:none"/>
+          📸 Upload missing games
+        </label>
+      </div>
+    </div>
+
+    <div id="uploadContent" style="display:block">
+      <label class="upload-zone" id="uploadZone">
+        <input type="file" id="fileInput" accept="image/jpeg,image/jpg,image/png,image/gif,image/webp,image/heic,image/heif" onchange="handleUpload(event)"/>
+        <div class="upload-zone-inner">
+          <div class="uz-camera-wrap">
+            <div class="uz-pulse"></div><div class="uz-pulse2"></div>
+            <div class="uz-camera-bg">📸</div>
+          </div>
+          <div class="uz-title">Drop today's screenshot!</div>
+          <div class="uz-sub" id="uzSub">AI reads it and saves for everyone instantly ✨</div>
+          <div class="uz-btn"><span>📂</span> Choose Screenshot</div>
+          <div class="game-pills" id="gamePillsContainer">
+            <span class="game-pill pill-sudoku">🎲 Mini Sudoku</span>
+            <span class="game-pill pill-zip">⚡ Zip</span>
+            <span class="game-pill pill-patches">🟩 Patches</span>
+            <span class="game-pill pill-tango">🌙 Tango</span>
+            <span class="game-pill pill-queens">👑 Queens</span>
+          </div>
+        </div>
+      </label>
+
+      <div id="uploadedToday">
+        <div class="ut-inner">
+          <div style="font-size:36px;margin-bottom:8px">✅</div>
+          <div style="font-family:'Fredoka One',cursive;font-size:18px;color:#15803d;margin-bottom:4px">Today's already uploaded!</div>
+          <div style="font-size:12px;color:#166534;font-weight:700;margin-bottom:14px" id="uploadedGames"></div>
+          <div onclick="showUploadAgain()" id="uploadMoreBtn" style="display:inline-flex;align-items:center;gap:6px;background:white;border:2px solid rgba(22,163,74,0.3);border-radius:100px;padding:7px 16px;font-size:12px;font-weight:800;color:#15803d;cursor:pointer;font-family:'Nunito',sans-serif">📸 Upload another game</div>
+        </div>
+      </div>
+
+      <div class="spinner-wrap" id="spinnerWrap">
+        <div class="spinner"></div>
+        <p>Reading your screenshot... 🔍</p>
+      </div>
+
+      <div class="preview-card" id="previewCard">
+        <div class="preview-top">
+          <h3>Confirm results 🎉</h3>
+          <span class="game-badge-preview" id="previewGameBadge">Game</span>
+        </div>
+        <div class="tie-section">
+          <label>Tie:</label>
+          <select id="tieSelect" onchange="updatePtsLabels()">
+            <option value="none">No tie</option>
+            <option value="tie1">Tie for 1st (2 players)</option>
+            <option value="tie2">Tie for 2nd (2 players)</option>
+            <option value="tieAll">All 3 tied</option>
+          </select>
+        </div>
+        <div class="place-row" id="row1"><div class="place-dot pd1">1</div><input id="p1" placeholder="1st place" list="namelist"/><span class="pts-tag" id="pts1lbl">10 pts</span></div>
+        <div class="place-row" id="row2"><div class="place-dot pd2">2</div><input id="p2" placeholder="2nd place" list="namelist"/><span class="pts-tag" id="pts2lbl">6 pts</span></div>
+        <div class="place-row" id="row3"><div class="place-dot pd3">3</div><input id="p3" placeholder="3rd place" list="namelist"/><span class="pts-tag" id="pts3lbl">0 pts</span></div>
+        <datalist id="namelist"><option value="Ninad"/><option value="Akshay"/><option value="Ajay"/></datalist>
+        <div class="btn-row">
+          <button class="btn btn-primary" onclick="saveResult()">Save for everyone 🎯</button>
+          <button class="btn" onclick="cancelPreview()">Cancel</button>
+        </div>
+      </div>
+
+      <div class="manual-divider" style="margin-top:20px">
+        <div class="manual-divider-line"></div>
+        <span>or paste "Copy score" text</span>
+        <div class="manual-divider-line"></div>
+      </div>
+
+      <div style="background:white;border:2.5px solid var(--border);border-radius:20px;padding:18px;box-shadow:4px 4px 0 var(--border);margin-bottom:16px">
+        <div style="font-family:'Fredoka One',cursive;font-size:15px;color:var(--navy);margin-bottom:6px">📋 Paste LinkedIn score</div>
+        <div style="font-size:12px;color:var(--text2);font-weight:600;margin-bottom:12px">After solving, tap "Copy score" in LinkedIn, then paste it below</div>
+        <textarea id="pasteScore" placeholder="Paste your LinkedIn score here..." style="width:100%;padding:10px 12px;font-size:13px;font-family:'Nunito',sans-serif;border:2.5px solid var(--border);border-radius:12px;background:var(--bg);color:var(--text);outline:none;resize:none;height:80px"></textarea>
+        <button onclick="parsePastedScore()" style="width:100%;margin-top:10px;padding:11px;border-radius:14px;font-family:'Fredoka One',cursive;font-size:16px;cursor:pointer;border:none;color:white;background:linear-gradient(135deg,#2563EB,#7C3AED);box-shadow:0 3px 10px rgba(37,99,235,0.3)">Read Score 🎯</button>
+        <div id="pasteErr" style="font-size:12px;color:var(--coral);background:rgba(220,38,38,0.08);border:2px solid rgba(220,38,38,0.2);border-radius:8px;padding:7px 10px;margin-top:8px;font-weight:700;display:none"></div>
+      </div>
+
+      <div class="manual-divider" style="margin-top:4px">
+        <div class="manual-divider-line"></div>
+        <span>or enter manually</span>
+        <div class="manual-divider-line"></div>
+      </div>
+
+      <div class="manual-wrap" style="margin-top:0">
+        <div class="manual-header">
+          <span class="manual-header-icon">✏️</span>
+          <h2>Manual Entry</h2>
+          <p style="font-size:14px;font-weight:700;color:var(--text2);margin-top:4px;line-height:1.5">Only if screenshot upload fails — <span style="color:var(--coral);font-weight:800">completely optional!</span></p>
+        </div>
+        <div class="manual-body">
+          <div class="manual-err" id="manualErr"></div>
+          <div class="manual-field">
+            <div class="manual-label">🎮 Game</div>
+            <select class="manual-select" id="manualGame">
+              <option value="">— Select a game —</option>
+              <option value="Mini Sudoku">🎲 Mini Sudoku</option>
+              <option value="Zip">⚡ Zip</option>
+              <option value="Patches">🟩 Patches</option>
+              <option value="Tango">🌙 Tango</option>
+              <option value="Queens">👑 Queens</option>
+            </select>
+          </div>
+          <div class="manual-field">
+            <div class="manual-label">🤝 Tie?</div>
+            <select class="manual-select" id="manualTie" onchange="updateManualRows()">
+              <option value="none">No tie</option>
+              <option value="tie1">Tie for 1st — both 8pts, 3rd gets 0pts</option>
+              <option value="tie2">Tie for 2nd — 1st gets 10pts, both 2nd get 3pts</option>
+              <option value="tieAll">All 3 tied — everyone gets 7pts</option>
+            </select>
+          </div>
+          <div class="manual-field">
+            <div class="manual-label">🏆 Results</div>
+            <div class="places-grid">
+              <div class="place-manual-row"><div class="pm-badge pm1">1</div><select class="pm-select" id="mp1"><option value="">— 1st place —</option><option value="Ninad">Ninad</option><option value="Akshay">Akshay</option><option value="Ajay">Ajay</option></select><span class="pm-pts" id="mpts1">10 pts</span></div>
+              <div class="place-manual-row"><div class="pm-badge pm2">2</div><select class="pm-select" id="mp2"><option value="">— 2nd place —</option><option value="Ninad">Ninad</option><option value="Akshay">Akshay</option><option value="Ajay">Ajay</option></select><span class="pm-pts" id="mpts2">6 pts</span></div>
+              <div class="place-manual-row" id="mrow3"><div class="pm-badge pm3">3</div><select class="pm-select" id="mp3"><option value="">— 3rd place —</option><option value="Ninad">Ninad</option><option value="Akshay">Akshay</option><option value="Ajay">Ajay</option></select><span class="pm-pts" id="mpts3">0 pts</span></div>
+            </div>
+          </div>
+          <button class="manual-save-btn" onclick="saveManual()">Save for everyone 🎯</button>
+          <div class="manual-success" id="manualSuccess">✅ Saved! Everyone will see this now.</div>
+        </div>
+      </div>
+    </div><!-- end uploadContent -->
+  </div>
+
+  <!-- SEASON TAB -->
+  <div id="tab-weekhist" class="tab-panel">
+    <div class="section-header"><h2>Season Overview</h2><div class="sh-line"></div></div>
+    <div id="seasonGrid"></div>
+  </div>
+
+  <!-- RULES TAB -->
+  <div id="tab-rules" class="tab-panel">
+    <div class="rules-hero">
+      <span class="rules-hero-icon">📜</span>
+      <div class="rules-hero-title">The Rules of the League</div>
+      <div class="rules-hero-sub">How points are awarded each game</div>
+    </div>
+    <div class="rules-list">
+      <div class="rule-card"><div class="rule-num rn1">1</div><div class="rule-body"><div class="rule-title">🥇 1st Place</div><div class="rule-desc">The fastest solver takes the top prize.</div><div class="pts-chips"><span class="pts-chip chip-gold">10 points</span></div></div></div>
+      <div class="rule-card"><div class="rule-num rn2">2</div><div class="rule-body"><div class="rule-title">🥈 2nd Place</div><div class="rule-desc">Second best still earns solid points.</div><div class="pts-chips"><span class="pts-chip chip-silver">6 points</span></div></div></div>
+      <div class="rule-card"><div class="rule-num rn3">3</div><div class="rule-body"><div class="rule-title">🥉 3rd Place</div><div class="rule-desc">Third place gets on the board but earns no points.</div><div class="pts-chips"><span class="pts-chip chip-bronze">0 points</span></div></div></div>
+      <div class="rule-card"><div class="rule-num rn4">4</div><div class="rule-body"><div class="rule-title">🤝 Tie for 1st (2 players)</div><div class="rule-desc">Two players finish joint first. 3rd gets nothing.</div><div class="pts-chips"><span class="pts-chip chip-gold">1st = 8 pts each</span><span class="pts-chip chip-bronze">3rd = 0 pts</span></div></div></div>
+      <div class="rule-card"><div class="rule-num rn5">5</div><div class="rule-body"><div class="rule-title">🤝 Tie for 2nd (2 players)</div><div class="rule-desc">Winner gets full points. Both second-placers split. No 3rd.</div><div class="pts-chips"><span class="pts-chip chip-gold">1st = 10 pts</span><span class="pts-chip chip-blue">2nd = 3 pts each</span></div></div></div>
+      <div class="rule-card"><div class="rule-num rn6">6</div><div class="rule-body"><div class="rule-title">🤝🤝🤝 All 3 Tied</div><div class="rule-desc">Everyone finishes together — points shared equally.</div><div class="pts-chips"><span class="pts-chip chip-purple">All = 7 pts each</span></div></div></div>
+      <div class="rule-card"><div class="rule-num rn7">7</div><div class="rule-body"><div class="rule-title">🎮 Games Tracked</div><div class="rule-desc">Points tracked across all five LinkedIn games.</div><div class="pts-chips"><span class="pts-chip pill-sudoku">🎲 Mini Sudoku</span><span class="pts-chip pill-zip">⚡ Zip</span><span class="pts-chip pill-patches">🟩 Patches</span><span class="pts-chip pill-tango">🌙 Tango</span><span class="pts-chip pill-queens">👑 Queens</span></div></div></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── SUPABASE CONFIG ──
+const SUPABASE_URL = 'https://cddygjbtdlyuxbcwulzn.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNkZHlnamJ0ZGx5dXhiY3d1bHpuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxMzA2OTEsImV4cCI6MjA5MTcwNjY5MX0.am3NA4HZG-L8bqXRVyfKB3RV03GjwG7mA7IBoadeyxU';
+const DB = `${SUPABASE_URL}/rest/v1/results`;
+const HEADERS = {
+  'Content-Type': 'application/json',
+  'apikey': SUPABASE_KEY,
+  'Authorization': `Bearer ${SUPABASE_KEY}`,
+  'Prefer': 'return=representation'
+};
+
+const MEMBERS = ['Ninad','Akshay','Ajay'];
+const GAMES = ['Mini Sudoku','Zip','Patches','Tango','Queens'];
+const GAME_EMOJI = {'Mini Sudoku':'🎲','Zip':'⚡','Patches':'🟩','Tango':'🌙','Queens':'👑'};
+const BADGE_STYLE = {
+  'Mini Sudoku':'background:rgba(22,163,74,0.12);color:#16A34A;border-color:rgba(22,163,74,0.3)',
+  'Zip':'background:rgba(202,138,4,0.12);color:#854D0E;border-color:rgba(202,138,4,0.3)',
+  'Patches':'background:rgba(22,163,74,0.1);color:#166534;border-color:rgba(22,163,74,0.2)',
+  'Tango':'background:rgba(79,70,229,0.12);color:#3730A3;border-color:rgba(79,70,229,0.3)',
+  'Queens':'background:rgba(124,58,237,0.12);color:#7C3AED;border-color:rgba(124,58,237,0.3)'
+};
+const GAME_GI = {'Mini Sudoku':'gi-sudoku','Zip':'gi-zip','Patches':'gi-patches','Tango':'gi-tango','Queens':'gi-queens'};
+const GAME_GN = {'Mini Sudoku':'gn-sudoku','Zip':'gn-zip','Patches':'gn-patches','Tango':'gn-tango','Queens':'gn-queens'};
+const GAME_PILL_CLASS = {'Mini Sudoku':'pill-sudoku','Zip':'pill-zip','Patches':'pill-patches','Tango':'pill-tango','Queens':'pill-queens'};
+const GAME_PILL_LABEL = {'Mini Sudoku':'🎲 Mini Sudoku','Zip':'⚡ Zip','Patches':'🟩 Patches','Tango':'🌙 Tango','Queens':'👑 Queens'};
+const NAME_COLOR = {Ninad:'var(--ninad)',Akshay:'var(--akshay)',Ajay:'var(--ajay)'};
+const MEDALS = ['🥇','🥈','🥉'];
+const MONTHS = {Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11};
+
+let records = [];
+let weekStart = '2026-04-12T00:00:00.000Z';
+
+// ── SUPABASE API ──
+async function dbFetch(){
+  const res = await fetch(`${DB}?order=id.asc`, {headers: {...HEADERS, 'Prefer': 'return=representation'}});
+  if(!res.ok) throw new Error('Fetch failed');
+  return await res.json();
+}
+
+async function dbInsert(rec){
+  const res = await fetch(DB, {
+    method: 'POST',
+    headers: HEADERS,
+    body: JSON.stringify({
+      id: rec.id,
+      game: rec.game,
+      date: rec.date,
+      tie: rec.tie,
+      players: rec.players
+    })
+  });
+  if(!res.ok){
+    const err = await res.text();
+    throw new Error(err);
+  }
+  return await res.json();
+}
+
+async function dbDelete(id){
+  const res = await fetch(`${DB}?id=eq.${id}`, {method: 'DELETE', headers: HEADERS});
+  if(!res.ok) throw new Error('Delete failed');
+}
+
+const SETTINGS_DB = `${SUPABASE_URL}/rest/v1/settings`;
+
+async function getSetting(key){
+  try {
+    const res = await fetch(`${SETTINGS_DB}?key=eq.${key}&select=value`, {headers: {...HEADERS, 'Prefer': 'return=representation'}});
+    if(!res.ok) return null;
+    const data = await res.json();
+    return data.length > 0 ? data[0].value : null;
+  } catch(e){ return null; }
+}
+
+async function setSetting(key, value){
+  try {
+    // Upsert
+    const res = await fetch(SETTINGS_DB, {
+      method: 'POST',
+      headers: {...HEADERS, 'Prefer': 'resolution=merge-duplicates,return=representation'},
+      body: JSON.stringify({key, value})
+    });
+    return res.ok;
+  } catch(e){ return false; }
+}
+
+// ── SEED DATA (Apr 12 & 13) ──
+const SEED_RECORDS = [
+  {id:1744444001,game:"Tango",date:"12 Apr 2026",tie:"none",players:[{name:"Ajay"},{name:"Akshay"},{name:"Ninad"}]},
+  {id:1744444002,game:"Queens",date:"12 Apr 2026",tie:"none",players:[{name:"Akshay"},{name:"Ajay"},{name:"Ninad"}]},
+  {id:1744444003,game:"Mini Sudoku",date:"12 Apr 2026",tie:"none",players:[{name:"Ajay"},{name:"Akshay"},{name:"Ninad"}]},
+  {id:1744444004,game:"Patches",date:"12 Apr 2026",tie:"none",players:[{name:"Ajay"},{name:"Akshay"},{name:"Ninad"}]},
+  {id:1744444005,game:"Zip",date:"12 Apr 2026",tie:"none",players:[{name:"Akshay"},{name:"Ninad"},{name:"Ajay"}]},
+  {id:1744530001,game:"Mini Sudoku",date:"13 Apr 2026",tie:"none",players:[{name:"Akshay"},{name:"Ajay"},{name:"Ninad"}]},
+  {id:1744530002,game:"Zip",date:"13 Apr 2026",tie:"tie1",players:[{name:"Ninad"},{name:"Akshay"},{name:"Ajay"}]},
+  {id:1744530003,game:"Queens",date:"13 Apr 2026",tie:"none",players:[{name:"Ajay"},{name:"Akshay"},{name:"Ninad"}]},
+  {id:1744530004,game:"Tango",date:"13 Apr 2026",tie:"none",players:[{name:"Ajay"},{name:"Akshay"},{name:"Ninad"}]},
+  {id:1744530005,game:"Patches",date:"13 Apr 2026",tie:"none",players:[{name:"Akshay"},{name:"Ajay"},{name:"Ninad"}]},
+  {id:1744616001,game:"Zip",date:"14 Apr 2026",tie:"none",players:[{name:"Ninad"},{name:"Akshay"},{name:"Ajay"}]},
+  {id:1744616002,game:"Mini Sudoku",date:"14 Apr 2026",tie:"none",players:[{name:"Ajay"},{name:"Akshay"},{name:"Ninad"}]},
+  {id:1744616003,game:"Tango",date:"14 Apr 2026",tie:"none",players:[{name:"Akshay"},{name:"Ninad"},{name:"Ajay"}]},
+  {id:1744616004,game:"Patches",date:"14 Apr 2026",tie:"none",players:[{name:"Ninad"},{name:"Ajay"},{name:"Akshay"}]},
+  {id:1744616005,game:"Queens",date:"14 Apr 2026",tie:"none",players:[{name:"Ninad"},{name:"Ajay"},{name:"Akshay"}]},
+  {id:1744702001,game:"Queens",date:"15 Apr 2026",tie:"none",players:[{name:"Akshay"},{name:"Ninad"},{name:"Ajay"}]},
+  {id:1744702002,game:"Zip",date:"15 Apr 2026",tie:"none",players:[{name:"Ninad"},{name:"Akshay"},{name:"Ajay"}]},
+  {id:1744702003,game:"Mini Sudoku",date:"15 Apr 2026",tie:"none",players:[{name:"Akshay"},{name:"Ajay"},{name:"Ninad"}]},
+  {id:1744702004,game:"Patches",date:"15 Apr 2026",tie:"none",players:[{name:"Ninad"},{name:"Ajay"},{name:"Akshay"}]},
+  {id:1744702005,game:"Tango",date:"15 Apr 2026",tie:"none",players:[{name:"Ajay"},{name:"Ninad"},{name:"Akshay"}]},
+  {id:1744962001,game:"Mini Sudoku",date:"19 Apr 2026",tie:"tie2",players:[{name:"Akshay"},{name:"Ninad"},{name:"Ajay"}]},
+  {id:1744962002,game:"Patches",date:"19 Apr 2026",tie:"none",players:[{name:"Ninad"},{name:"Akshay"},{name:"Ajay"}]},
+  {id:1744962003,game:"Tango",date:"19 Apr 2026",tie:"none",players:[{name:"Ajay"},{name:"Ninad"},{name:"Akshay"}]},
+  {id:1745134801,game:"Patches",date:"20 Apr 2026",tie:"none",players:[{name:"Akshay"},{name:"Ninad"},{name:"Ajay"}]},
+  {id:1745134802,game:"Queens",date:"20 Apr 2026",tie:"tie2",players:[{name:"Ninad"},{name:"Ajay"},{name:"Akshay"}]},
+  {id:1745134803,game:"Tango",date:"20 Apr 2026",tie:"none",players:[{name:"Ajay"},{name:"Ninad"},{name:"Akshay"}]},
+  {id:1745134804,game:"Mini Sudoku",date:"20 Apr 2026",tie:"none",players:[{name:"Ajay"},{name:"Akshay"},{name:"Ninad"}]},
+  {id:1745134805,game:"Zip",date:"20 Apr 2026",tie:"tieAll",players:[{name:"Ninad"},{name:"Ajay"},{name:"Akshay"}]},
+];
+
+async function seedIfNeeded(existingIds){
+  const missing = SEED_RECORDS.filter(r => !existingIds.has(r.id));
+  if(missing.length === 0) return false;
+  for(const rec of missing){
+    try {
+      await fetch(DB, {
+        method:'POST',
+        headers: HEADERS,
+        body: JSON.stringify(rec)
+      });
+      console.log('Seeded:', rec.game, rec.date);
+    } catch(e){ console.warn('Seed failed for', rec.game); }
+  }
+  return true; // indicates new records were inserted
+}
+
+// ── INIT ──
+async function init(){
+  setSyncStatus('connecting');
+  try {
+    const rows = await dbFetch();
+    records = rows.map(r => ({...r, players: Array.isArray(r.players) ? r.players : JSON.parse(r.players)}));
+    const existingIds = new Set(records.map(r => r.id));
+    const seeded = await seedIfNeeded(existingIds);
+    if(seeded){
+      // Always re-fetch if any new records were seeded
+      const fresh = await dbFetch();
+      records = fresh.map(r => ({...r, players: Array.isArray(r.players) ? r.players : JSON.parse(r.players)}));
+    }
+    // Load weekStart from Supabase
+    const storedWeek = await getSetting('week_start');
+    if(storedWeek) weekStart = storedWeek;
+    setSyncStatus('live');
+    renderAll();
+  } catch(e) {
+    setSyncStatus('offline');
+    console.error(e);
+  }
+  document.getElementById('loadingOverlay').style.display = 'none';
+
+  // Check lock state every second
+  setInterval(() => {
+    checkLockState();
+    if(!isUnlocked()) updateCountdown();
+  }, 1000);
+  checkLockState();
+
+  // Poll for updates every 15 seconds
+  setInterval(async () => {
+    try {
+      const rows = await dbFetch();
+      const newRecs = rows.map(r => ({...r, players: Array.isArray(r.players) ? r.players : JSON.parse(r.players)}));
+      const storedWeek = await getSetting('week_start');
+      let changed = JSON.stringify(newRecs) !== JSON.stringify(records);
+      if(storedWeek && storedWeek !== weekStart){ weekStart = storedWeek; changed = true; }
+      if(changed){ records = newRecs; renderAll(); }
+      setSyncStatus('live');
+    } catch(e){ setSyncStatus('offline'); }
+  }, 15000);
+}
+
+function setSyncStatus(state){
+  const dot = document.getElementById('syncDot');
+  const txt = document.getElementById('syncStatus');
+  if(state === 'live'){ dot.className = 'sync-dot'; txt.textContent = 'Live — synced for everyone'; }
+  else if(state === 'connecting'){ dot.className = 'sync-dot'; txt.textContent = 'Connecting...'; }
+  else { dot.className = 'sync-dot offline'; txt.textContent = 'Offline — check connection'; }
+}
+
+function parseDate(str){
+  const p = str.split(' ');
+  return new Date(Date.UTC(parseInt(p[2]), MONTHS[p[1]], parseInt(p[0])));
+}
+
+function getISTNow(){
+  const now = new Date();
+  const utcMs = now.getTime() + (now.getTimezoneOffset() * 60000);
+  return new Date(utcMs + (5.5 * 3600000));
+}
+
+function dateToStr(d){
+  return d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+}
+
+function getTodayStr(){
+  return dateToStr(getISTNow());
+}
+
+function getYesterdayStr(){
+  const ist = getISTNow();
+  ist.setDate(ist.getDate()-1);
+  return dateToStr(ist);
+}
+
+function getUploadDateStr(){
+  // Before 12:30 PM IST → use yesterday's date for uploads
+  return isUnlocked() ? getTodayStr() : getYesterdayStr();
+}
+
+function calcPts(idx, tie){
+  if(tie === 'tieAll') return 7;
+  if(tie === 'none') return [10,6,0][idx] ?? 0;
+  if(tie === 'tie1') return [8,8,0][idx] ?? 0;
+  if(tie === 'tie2') return [10,3,3][idx] ?? 0;
+  return 0;
+}
+
+function normName(raw, knownNames){
+  if(!raw) return null;
+  const r = raw.trim().toLowerCase();
+  // If "You" — figure out who it is by finding the missing player
+  if(r === 'you'){
+    if(knownNames && knownNames.length > 0){
+      const known = knownNames.map(n => n.toLowerCase());
+      const missing = MEMBERS.find(m => !known.some(k => k.includes(m.toLowerCase())));
+      if(missing) return missing;
+    }
+    return 'Ninad'; // fallback
+  }
+  if(r.includes('ninad')) return 'Ninad';
+  if(r.includes('akshay')) return 'Akshay';
+  if(r.includes('ajay')) return 'Ajay';
+  return null;
+}
+
+function switchTab(id, btn){
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-' + id).classList.add('active');
+  if(id === 'upload'){
+    // Small delay to ensure DOM is rendered before checking
+    setTimeout(() => { checkLockState(); checkTodayUploads(); }, 50);
+  }
+  if(id === 'weekhist'){ renderSeason(); }
+}
+
+function showErr(msg){ const e = document.getElementById('errMsg'); e.textContent = msg; e.style.display = msg ? 'block' : 'none'; }
+
+// ── UPLOAD ──
+async function handleUpload(ev){
+  const file = ev.target.files[0]; if(!file) return;
+  ev.target.value = ''; showErr('');
+  document.getElementById('uploadZone').style.display = 'none';
+  document.getElementById('spinnerWrap').style.display = 'block';
+  // Robust image reading for iPhone - try multiple methods
+  const b64 = await new Promise((res, rej) => {
+    // Try reading as ArrayBuffer first (most compatible on iOS)
+    const tryArrayBuffer = () => {
+      const fr = new FileReader();
+      fr.onload = (e) => {
+        try {
+          const arr = new Uint8Array(e.target.result);
+          let binary = '';
+          for(let i = 0; i < arr.byteLength; i++) binary += String.fromCharCode(arr[i]);
+          const base64 = btoa(binary);
+          if(base64 && base64.length > 100){ res(base64); return; }
+          tryDataURL();
+        } catch(err){ tryDataURL(); }
+      };
+      fr.onerror = () => tryDataURL();
+      fr.readAsArrayBuffer(file);
+    };
+
+    // Fallback: readAsDataURL
+    const tryDataURL = () => {
+      const fr = new FileReader();
+      fr.onload = (e) => {
+        try {
+          const result = e.target.result;
+          const base64 = result.includes(',') ? result.split(',')[1] : result;
+          if(base64 && base64.length > 100){ res(base64); return; }
+          tryCanvas();
+        } catch(err){ tryCanvas(); }
+      };
+      fr.onerror = () => tryCanvas();
+      fr.readAsDataURL(file);
+    };
+
+    // Last resort: canvas
+    const tryCanvas = () => {
+      const objectUrl = URL.createObjectURL(file);
+      const img = new Image();
+      img.onload = () => {
+        try {
+          const MAX = 1400;
+          let w = img.naturalWidth || 800, h = img.naturalHeight || 1200;
+          if(w > MAX || h > MAX){
+            if(w > h){ h = Math.round(h*MAX/w); w = MAX; }
+            else{ w = Math.round(w*MAX/h); h = MAX; }
+          }
+          const canvas = document.createElement('canvas');
+          canvas.width = w; canvas.height = h;
+          const ctx = canvas.getContext('2d');
+          ctx.fillStyle = '#fff'; ctx.fillRect(0,0,w,h);
+          ctx.drawImage(img, 0, 0, w, h);
+          URL.revokeObjectURL(objectUrl);
+          const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
+          res(dataUrl.split(',')[1]);
+        } catch(e){
+          URL.revokeObjectURL(objectUrl);
+          rej(new Error('Could not read image. Try forwarding via WhatsApp first then upload.'));
+        }
+      };
+      img.onerror = () => {
+        URL.revokeObjectURL(objectUrl);
+        rej(new Error('Could not read image. Try forwarding via WhatsApp first then upload.'));
+      };
+      img.src = objectUrl;
+    };
+
+    tryArrayBuffer();
+  });
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514', max_tokens: 800,
+        system: `You are analyzing LinkedIn game result screenshots. There are TWO types of screenshots:
+
+TYPE 1 — Post-game popup (shows "Solved in X:XX" at top, white card with connections leaderboard below)
+TYPE 2 — Full leaderboard view (shows "Zip Leaderboard" or "GameName Leaderboard" as the title at the top)
+
+GAME IDENTIFICATION:
+Look for game name anywhere in the screenshot. One of: Mini Sudoku, Zip, Patches, Tango, Queens.
+- Mini Sudoku: green background or "Mini Sudoku" text
+- Zip: orange background or "Zip Leaderboard" title
+- Patches: red/coral background or "Patches" text
+- Tango: dark navy background or "Tango" text
+- Queens: purple background or "Queens" text
+
+PLAYER IDENTIFICATION — CRITICAL RULES:
+Only care about 3 players: "You", "Akshay Pandith" (=Akshay), "Ajay Pandith" (=Ajay).
+Ignore ALL other players completely (Manish Singh, Kartic K, Preetham Hegde, etc).
+
+For TYPE 2 (full leaderboard): Find the positions of ONLY our 3 players among the full list.
+Example: If list is [1.You, 2.Akshay, 3.Manish, 4.Kartic, 5.Ajay] → among our 3: You=1st, Akshay=2nd, Ajay=3rd
+
+"You" = the person who uploaded. Do NOT assume Ninad. Just return "You".
+
+MEDAL/POSITION DETECTION:
+- Use the number or medal icon next to each player row to determine their position
+- In full leaderboard: use the position numbers (1,2,3,4,5...) — find where our 3 players appear
+
+TIE DETECTION:
+- tie1 = two of our 3 players share gold/1st position
+- tie2 = two of our 3 players share silver/2nd position  
+- tieAll = all 3 share same position
+- none = standard different positions
+
+Return ONLY valid JSON, no markdown:
+{"game":"GameName","first":"Name","second":"Name","third":"Name or null","tie":"none|tie1|tie2|tieAll"}`,
+        messages: [{role:'user', content:[{type:'image', source:{type:'base64', media_type:'image/jpeg', data:b64}}, {type:'text', text:'Extract result.'}]}]
+      })
+    });
+    const data = await resp.json();
+    const txt = (data.content||[]).map(b => b.text||'').join('');
+    const parsed = JSON.parse(txt.replace(/```json|```/g,'').trim());
+    showPreview(parsed);
+  } catch(e) {
+    console.error('Upload error:', e);
+    const msg = e?.message || String(e);
+    if(msg.includes('fetch') || msg.includes('network') || msg.includes('Failed')){
+      showErr('Network error — check your internet connection and try again.');
+    } else if(msg.includes('JSON') || msg.includes('parse')){
+      showErr('AI could not read the image. Try a clearer screenshot or use Manual entry below.');
+    } else {
+      showErr('Error: ' + msg.slice(0,80) + ' — try again or use Manual entry.');
+    }
+    showPreview({game:'Unknown', first:'', second:'', third:'', tie:'none'});
+  } finally {
+    document.getElementById('spinnerWrap').style.display = 'none';
+  }
+}
+
+function showPreview(parsed){
+  const gn = GAMES.find(g => parsed.game && g.toLowerCase().includes((parsed.game||'').toLowerCase().split(' ')[0])) || parsed.game || 'Unknown';
+  const uploadDate = getUploadDateStr();
+  const uploadedGames = new Set(records.filter(r => r.date === uploadDate).map(r => r.game));
+  if(uploadedGames.has(gn)){
+    document.getElementById('uploadZone').style.display = 'none';
+    showErr(`${GAME_EMOJI[gn]||'🎮'} ${gn} is already uploaded for ${uploadDate}!`);
+    checkTodayUploads(); return;
+  }
+  const badge = document.getElementById('previewGameBadge');
+  badge.textContent = (GAME_EMOJI[gn]||'🎮') + ' ' + gn;
+  const bs = BADGE_STYLE[gn] || 'background:#f3f4f6;color:#374151;border-color:#d1d5db';
+  badge.style.cssText = bs + ';border-radius:100px;padding:5px 14px;font-size:12px;font-weight:800;border:2px solid transparent;font-family:Nunito,sans-serif';
+  const bsParts = bs.split(';'); bsParts.forEach(p => { const [k,v] = p.split(':'); if(k&&v) badge.style[k.trim()] = v.trim(); });
+  // Collect all non-"You" names to identify who "You" is
+  const allRaw = [parsed.first, parsed.second, parsed.third].filter(Boolean);
+  const knownNames = allRaw.filter(n => n.toLowerCase() !== 'you');
+  document.getElementById('p1').value = normName(parsed.first, knownNames) || parsed.first || '';
+  document.getElementById('p2').value = normName(parsed.second, knownNames) || parsed.second || '';
+  document.getElementById('p3').value = normName(parsed.third, knownNames) || parsed.third || '';
+  document.getElementById('tieSelect').value = parsed.tie || 'none';
+  updatePtsLabels();
+  document.getElementById('previewCard').style.display = 'block';
+}
+
+function updatePtsLabels(){
+  const tie = document.getElementById('tieSelect').value;
+  const map = {none:['10 pts','6 pts','0 pts'], tie1:['8 pts','8 pts','0 pts'], tie2:['10 pts','3 pts','3 pts'], tieAll:['7 pts','7 pts','7 pts']};
+  const l = map[tie] || map.none;
+  document.getElementById('pts1lbl').textContent = l[0];
+  document.getElementById('pts2lbl').textContent = l[1];
+  document.getElementById('pts3lbl').textContent = l[2];
+  document.getElementById('row3').style.display = tie === 'tie2' ? 'none' : 'flex';
+}
+
+function cancelPreview(){
+  document.getElementById('previewCard').style.display = 'none';
+  document.getElementById('uploadZone').style.display = 'block';
+  showErr('');
+  checkTodayUploads();
+}
+
+async function saveResult(){
+  const gn = document.getElementById('previewGameBadge').textContent;
+  const realGame = GAMES.find(g => gn.includes(g)) || 'Unknown';
+  const tie = document.getElementById('tieSelect').value;
+  const n1 = normName(document.getElementById('p1').value);
+  const n2 = normName(document.getElementById('p2').value);
+  const n3 = normName(document.getElementById('p3').value);
+  if(!n1 || !n2){ showErr('Please enter valid names: Ninad, Akshay, or Ajay.'); return; }
+  if(tie === 'none' && !n3){ showErr('Please enter 3rd place.'); return; }
+  // For tie2: auto-assign 3rd as the missing player (they get 3pts too)
+  let final3 = n3;
+  if(tie === 'tie2' && !final3){
+    final3 = MEMBERS.find(m => m !== n1 && m !== n2) || null;
+  }
+  const date = getUploadDateStr();
+  const players = [{name:n1},{name:n2}];
+  if(final3) players.push({name:final3});
+  const newRec = {id: Date.now(), game: realGame, date, tie, players};
+  try {
+    document.querySelector('#previewCard .btn-primary').textContent = 'Saving...';
+    await dbInsert(newRec);
+    records.push(newRec);
+    renderAll();
+    cancelPreview();
+    checkTodayUploads();
+  } catch(e) {
+    showErr('Could not save. Check your connection.');
+    document.querySelector('#previewCard .btn-primary').textContent = 'Save for everyone 🎯';
+  }
+}
+
+async function deleteRecord(id){
+  if(!confirm('Delete this result?')) return;
+  try {
+    await dbDelete(id);
+    records = records.filter(r => r.id !== id);
+    renderAll();
+  } catch(e) { alert('Could not delete. Check connection.'); }
+}
+
+function getScores(recs){
+  const s = {Ninad:0,Akshay:0,Ajay:0}, w = {Ninad:0,Akshay:0,Ajay:0}, g = {Ninad:0,Akshay:0,Ajay:0};
+  recs.forEach(rec => {
+    rec.players.forEach((p,i) => {
+      if(!MEMBERS.includes(p.name)) return;
+      s[p.name] += calcPts(i, rec.tie); g[p.name]++;
+      const isWin = (rec.tie==='tieAll') || (rec.tie==='tie1' && i<=1) || (rec.tie!=='tie1' && rec.tie!=='tieAll' && i===0);
+      if(isWin) w[p.name]++;
+    });
+  });
+  return {s, w, g};
+}
+
+function getISTDate(){
+  // Always use UTC+5:30 regardless of device timezone
+  const now = new Date();
+  const utcMs = now.getTime() + (now.getTimezoneOffset() * 60000);
+  const istMs = utcMs + (5.5 * 3600000);
+  return new Date(istMs);
+}
+
+function isUnlocked(){
+  const ist = getISTDate();
+  const h = ist.getHours();
+  const m = ist.getMinutes();
+  return (h > 12) || (h === 12 && m >= 30);
+}
+
+function getTimeUntilUnlock(){
+  const ist = getISTDate();
+  // Next 12:30 PM IST
+  const unlock = new Date(ist);
+  unlock.setHours(12, 30, 0, 0);
+  let diff = unlock - ist;
+  if(diff < 0) diff = 0;
+  const h = Math.floor(diff / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  const s = Math.floor((diff % 60000) / 1000);
+  return {h, m, s};
+}
+
+function updateCountdown(){
+  const {h,m,s} = getTimeUntilUnlock();
+  document.getElementById('cdHours').textContent = String(h).padStart(2,'0');
+  document.getElementById('cdMins').textContent = String(m).padStart(2,'0');
+  document.getElementById('cdSecs').textContent = String(s).padStart(2,'0');
+}
+
+function checkLockState(){
+  const locked = document.getElementById('lockedCard');
+  const uploadDiv = document.getElementById('uploadContent');
+  if(!locked || !uploadDiv) return;
+
+  // Always show content
+  uploadDiv.style.display = 'block';
+
+  if(isUnlocked()){
+    locked.style.display = 'none';
+  } else {
+    locked.style.display = 'block';
+    updateCountdown();
+    const yesterday = getYesterdayStr();
+    const doneGames = new Set(records.filter(r => r.date === yesterday).map(r => r.game));
+    const remaining = GAMES.filter(g => !doneGames.has(g));
+    const lockedTitle = locked.querySelector('.locked-title');
+    const lockedSub = locked.querySelector('.locked-sub');
+    const pillsWrap = document.getElementById('lockedPills');
+    const uploadBtn = document.getElementById('lockedUploadBtn');
+
+    if(remaining.length === 0 && doneGames.size > 0){
+      if(lockedTitle) lockedTitle.textContent = "You're all caught up! 🎉";
+      if(lockedSub) lockedSub.innerHTML = `All <strong>${yesterday}</strong> results are in.<br>Today's games unlock at <strong>12:30 PM IST</strong>.`;
+      if(pillsWrap) pillsWrap.innerHTML = GAMES.map(g => `<span class="game-pill pill-done">✓ ${GAME_PILL_LABEL[g]}</span>`).join('');
+      if(uploadBtn) uploadBtn.style.display = 'none';
+    } else {
+      if(lockedTitle) lockedTitle.textContent = remaining.length === 5 ? "Games haven't unlocked yet!" : `${doneGames.size}/5 uploaded for ${yesterday}`;
+      if(lockedSub){
+        if(remaining.length === 5){
+          lockedSub.innerHTML = `LinkedIn games unlock at <strong>12:30 PM IST</strong> every day.<br>Come back then to upload your results!`;
+        } else {
+          lockedSub.innerHTML = `Still need for <strong>${yesterday}</strong>: ${remaining.map(g=>GAME_EMOJI[g]+' '+g).join(', ')}<br>Upload before <strong>12:30 PM</strong>.`;
+        }
+      }
+      if(pillsWrap) pillsWrap.innerHTML = GAMES.map(g => {
+        const done = doneGames.has(g);
+        return `<span class="game-pill ${done?'pill-done':GAME_PILL_CLASS[g]}">${GAME_PILL_LABEL[g]}${done?' ✓':''}</span>`;
+      }).join('');
+      if(uploadBtn) uploadBtn.style.display = doneGames.size > 0 ? 'block' : 'none';
+    }
+  }
+}
+
+function checkTodayUploads(){
+  const uploadDate = getUploadDateStr();
+  const isBeforeUnlock = !isUnlocked();
+  const yesterday = getYesterdayStr();
+  const today = getTodayStr();
+
+  // Which date are we tracking uploads for?
+  const trackDate = isBeforeUnlock ? yesterday : today;
+  const doneGames = new Set(records.filter(r => r.date === trackDate).map(r => r.game));
+  const remaining = GAMES.filter(g => !doneGames.has(g));
+
+  const uz = document.getElementById('uploadZone');
+  const ut = document.getElementById('uploadedToday');
+  const pc = document.getElementById('previewCard');
+  const pillsContainer = document.getElementById('gamePillsContainer');
+
+  if(pillsContainer){
+    pillsContainer.innerHTML = GAMES.map(g => {
+      const done = doneGames.has(g);
+      return `<span class="game-pill ${done?'pill-done':GAME_PILL_CLASS[g]}">${GAME_PILL_LABEL[g]}${done?' ✓':''}</span>`;
+    }).join('');
+  }
+
+  if(pc && pc.style.display === 'block') return;
+
+  const uzSub = document.getElementById('uzSub');
+  const gEl = document.getElementById('uploadedGames');
+  const bEl = document.getElementById('uploadMoreBtn');
+
+  if(doneGames.size === 0){
+    uz.style.display = 'block'; ut.style.display = 'none';
+    if(uzSub){
+      if(isBeforeUnlock){
+        uzSub.textContent = `Upload missing results from ${yesterday} before games unlock at 12:30 PM ⏰`;
+      } else {
+        uzSub.textContent = 'AI reads it and saves for everyone instantly ✨';
+      }
+    }
+  } else {
+    if(remaining.length === 0){
+      // All done
+      uz.style.display = 'none'; ut.style.display = 'block';
+      if(isBeforeUnlock){
+        if(gEl) gEl.textContent = `All ${yesterday} results are in! 🎉 Today's games unlock at 12:30 PM IST.`;
+        if(bEl) bEl.style.display = 'none';
+      } else {
+        if(gEl) gEl.textContent = 'All 5 games done today! 🎉';
+        if(bEl) bEl.style.display = 'none';
+      }
+    } else {
+      // Some done, some remaining
+      uz.style.display = 'none'; ut.style.display = 'block';
+      const dateLabel = isBeforeUnlock ? yesterday : today;
+      if(gEl) gEl.textContent = `${doneGames.size}/5 done for ${dateLabel} · Still need: ${remaining.map(g => GAME_EMOJI[g]+' '+g).join(', ')}`;
+      if(bEl) bEl.style.display = 'inline-flex';
+    }
+  }
+}
+
+function showUploadAgain(){
+  const uploadDate = getUploadDateStr();
+  const doneGames = new Set(records.filter(r => r.date === uploadDate).map(r => r.game));
+  const remaining = GAMES.filter(g => !doneGames.has(g));
+  document.getElementById('uploadedToday').style.display = 'none';
+  document.getElementById('uploadZone').style.display = 'block';
+  const uzSub = document.getElementById('uzSub');
+  if(uzSub) uzSub.textContent = remaining.length > 0 ? `Still need for ${uploadDate}: ${remaining.map(g => GAME_EMOJI[g]+' '+g).join(', ')}` : 'All done!';
+  showErr('');
+}
+
+// ── RENDER FUNCTIONS ──
+function renderPodium(){
+  const {s,w,g} = getScores(records);
+  const sorted = [...MEMBERS].sort((a,b) => s[b]-s[a]);
+  document.getElementById('podiumEl').innerHTML = sorted.map((name,i) => `
+    <div class="podium-card ${i===0?'p1':''}">
+      <span class="podium-medal">${MEDALS[i]}</span>
+      <div class="podium-name name-${name.toLowerCase()}">${name}</div>
+      <div class="podium-pts" style="color:${NAME_COLOR[name]}">${s[name]}</div>
+      <div class="podium-pts-label">points</div>
+      <div class="podium-badge-row">
+        <span class="stat-badge badge-wins-${name.toLowerCase()}">🏆 ${w[name]} win${w[name]!==1?'s':''}</span>
+        <span class="stat-badge badge-games">🎮 ${g[name]} games</span>
+      </div>
+    </div>`).join('');
+}
+
+function gameColor(game){
+  return {'Mini Sudoku':{bg:'#E8F9EE',border:'#86EFAC',text:'#15803D'},'Zip':{bg:'#FEF9C3',border:'#FDE047',text:'#854D0E'},'Patches':{bg:'#DCFCE7',border:'#4ADE80',text:'#166534'},'Tango':{bg:'#EEF2FF',border:'#A5B4FC',text:'#3730A3'},'Queens':{bg:'#F5F3FF',border:'#C4B5FD',text:'#5B21B6'}}[game] || {bg:'#F3F4F6',border:'#D1D5DB',text:'#374151'};
+}
+
+function renderResults(){
+  const sec = document.getElementById('resultsSection');
+  const list = document.getElementById('resultsList');
+  if(records.length === 0){ sec.style.display = 'none'; return; }
+  sec.style.display = 'block';
+  const byDate = {};
+  records.forEach(r => { if(!byDate[r.date]) byDate[r.date]=[]; byDate[r.date].push(r); });
+  const sortedDates = Object.keys(byDate).sort((a,b) => parseDate(b)-parseDate(a));
+  list.innerHTML = sortedDates.map(date => {
+    const dayRecs = byDate[date];
+    const dayPts = {Ninad:0,Akshay:0,Ajay:0};
+    dayRecs.forEach(rec => rec.players.forEach((p,i) => { if(MEMBERS.includes(p.name)) dayPts[p.name] += calcPts(i,rec.tie); }));
+    const sorted = [...MEMBERS].sort((a,b) => dayPts[b]-dayPts[a]);
+    const gameCards = dayRecs.map(r => {
+      const gc = gameColor(r.game);
+      const winner = r.players[0]?.name||'?';
+      const winCol = NAME_COLOR[winner]||'var(--text2)';
+      const shortName = r.game==='Mini Sudoku'?'Sudoku':r.game;
+      return `<div style="display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 10px;background:${gc.bg};border:2px solid ${gc.border};border-radius:14px;min-width:62px;text-align:center">
+        <span style="font-size:22px;line-height:1">${GAME_EMOJI[r.game]||'🎮'}</span>
+        <span style="font-size:10px;font-weight:800;color:${gc.text};letter-spacing:0.03em">${shortName}</span>
+        <span style="font-size:11px;font-weight:800;color:${winCol};font-family:'Fredoka One',cursive">${winner}</span>
+      </div>`;
+    }).join('');
+    const playerRows = sorted.map((name,rank) => {
+      const col = NAME_COLOR[name];
+      const rankEmoji = rank===0?'🥇':rank===1?'🥈':'🥉';
+      const chips = dayRecs.map(r => {
+        const pidx = r.players.findIndex(p => p.name===name);
+        if(pidx===-1) return '';
+        const pts = calcPts(pidx,r.tie);
+        const gc = gameColor(r.game);
+        return `<div style="display:flex;flex-direction:column;align-items:center;gap:1px;padding:4px 6px;background:${gc.bg};border:1.5px solid ${gc.border};border-radius:8px;min-width:38px;text-align:center">
+          <span style="font-size:13px">${GAME_EMOJI[r.game]||'🎮'}</span>
+          <span style="font-size:11px;font-weight:800;color:${pts>0?col:'var(--text3)'}">${pts>0?'+'+pts:'0'}</span>
+        </div>`;
+      }).join('');
+      return `<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1.5px dashed var(--border)">
+        <span style="font-size:16px">${rankEmoji}</span>
+        <span style="font-family:'Fredoka One',cursive;font-size:15px;color:${col};min-width:60px">${name}</span>
+        <span style="font-family:'Fredoka One',cursive;font-size:22px;color:${col};min-width:36px">${dayPts[name]}</span>
+        <div style="display:flex;gap:5px;flex-wrap:wrap">${chips}</div>
+      </div>`;
+    }).join('');
+    return `<div style="background:white;border:2.5px solid var(--border);border-radius:20px;overflow:hidden;box-shadow:4px 4px 0 var(--border);margin-bottom:14px">
+      <div style="display:flex;align-items:center;gap:8px;padding:12px 16px 10px;border-bottom:2px solid var(--border)">
+        <span style="font-family:'Fredoka One',cursive;font-size:16px;color:var(--navy)">${date}</span>
+        <span style="font-size:11px;color:var(--text3);font-weight:700;background:rgba(0,0,0,0.05);padding:2px 8px;border-radius:100px">${dayRecs.length}/5 games</span>
+      </div>
+      <div style="padding:12px 16px;display:flex;gap:6px;flex-wrap:wrap;border-bottom:2px solid var(--border)">${gameCards}</div>
+      <div style="padding:4px 16px 8px">${playerRows}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderByGame(){
+  const winsPerGame = {};
+  MEMBERS.forEach(m => { winsPerGame[m]={}; GAMES.forEach(g => winsPerGame[m][g]=0); });
+  records.forEach(rec => {
+    rec.players.forEach((p,i) => {
+      if(!MEMBERS.includes(p.name)) return;
+      const isWin = (rec.tie==='tieAll')||(rec.tie==='tie1'&&i<=1)||(rec.tie!=='tie1'&&rec.tie!=='tieAll'&&i===0);
+      if(isWin) winsPerGame[p.name][rec.game] = (winsPerGame[p.name][rec.game]||0)+1;
+    });
+  });
+  document.getElementById('bygameGrid').innerHTML = GAMES.map(game => {
+    const gi = GAME_GI[game]||'gi-queens';
+    const gn = GAME_GN[game]||'gn-queens';
+    const em = GAME_EMOJI[game]||'🎮';
+    const gc = gameColor(game);
+    const total = MEMBERS.reduce((s,m) => s+(winsPerGame[m][game]||0),0);
+    const maxWins = Math.max(...MEMBERS.map(m => winsPerGame[m][game]||0));
+    const playersHtml = MEMBERS.map(m => {
+      const wins = winsPerGame[m][game]||0;
+      const isTop = wins>0&&wins===maxWins;
+      return `<div class="gr-player"><div class="gr-player-name" style="color:${NAME_COLOR[m]}">${m}</div><div class="gr-wins" style="color:${NAME_COLOR[m]}">${wins}</div><div class="gr-wins-label">wins</div>${isTop?`<span class="gr-rank-badge badge-wins-${m.toLowerCase()}">👑 Top</span>`:''}</div>`;
+    }).join('');
+    return `<div class="game-row-card"><div class="gr-header" style="background:${gc.bg}"><div class="gr-icon" style="background:white;font-size:20px;border:2px solid ${gc.border}">${em}</div><div class="gr-name" style="color:${gc.text}">${game}</div><div class="gr-total">${total} game${total!==1?'s':''}</div></div><div class="gr-players">${playersHtml}</div></div>`;
+  }).join('');
+}
+
+function renderPoints(){
+  const ptsPerGame = {};
+  MEMBERS.forEach(m => { ptsPerGame[m]={}; GAMES.forEach(g => ptsPerGame[m][g]=0); });
+  records.forEach(rec => {
+    rec.players.forEach((p,i) => {
+      if(!MEMBERS.includes(p.name)) return;
+      ptsPerGame[p.name][rec.game] = (ptsPerGame[p.name][rec.game]||0)+calcPts(i,rec.tie);
+    });
+  });
+  const totals = {};
+  MEMBERS.forEach(m => totals[m]=GAMES.reduce((s,g)=>s+(ptsPerGame[m][g]||0),0));
+  const sorted = [...MEMBERS].sort((a,b)=>totals[b]-totals[a]);
+  const maxPts = {};
+  GAMES.forEach(g => { maxPts[g]=Math.max(...MEMBERS.map(m=>ptsPerGame[m][g]||0)); });
+  document.getElementById('ptsTabGrid').innerHTML = sorted.map(name => {
+    const gamesHtml = GAMES.map(game => {
+      const p = ptsPerGame[name][game]||0;
+      const isTop = p>0&&p===maxPts[game];
+      const gc = gameColor(game);
+      return `<div class="pts-game-cell" style="background:${isTop?gc.bg:'transparent'}"><span class="pts-game-em">${GAME_EMOJI[game]||'🎮'}</span><div class="pts-game-name" style="color:${gc.text}">${game.replace('Mini ','')}</div><div class="pts-game-val" style="color:${isTop?NAME_COLOR[name]:'var(--text)'}">${p}</div><div class="pts-game-label">${isTop?'⭐ top':'pts'}</div></div>`;
+    }).join('');
+    return `<div class="pts-player-card"><div class="pts-player-header"><div class="pts-player-name name-${name.toLowerCase()}">${name}</div><div style="text-align:right"><div class="pts-player-total" style="color:${NAME_COLOR[name]}">${totals[name]}</div><div class="pts-player-total-label">total pts</div></div></div><div class="pts-games-grid">${gamesHtml}</div></div>`;
+  }).join('');
+}
+
+function renderWeekly(){
+  const baseWs = new Date('2026-04-12T00:00:00.000Z');
+  const stored = weekStart;
+  const storedWs = new Date(stored);
+  const useWs = storedWs > baseWs ? storedWs : baseWs;
+  const useWe = new Date(useWs); useWe.setDate(useWs.getDate()+7);
+  document.getElementById('weekMeta').textContent = `${useWs.toLocaleDateString('en-GB',{day:'numeric',month:'short'})} – ${useWe.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})}`;
+  const wRecs = records.filter(r => {
+    const d = parseDate(r.date);
+    return d >= useWs && d < useWe;
+  });
+  const {s,w,g} = getScores(wRecs);
+  const sorted = [...MEMBERS].sort((a,b) => s[b]-s[a]);
+  document.getElementById('wkCards').innerHTML = sorted.map((name,i) => `
+    <div class="wk-card ${i===0?'wk1':''}">
+      <span class="wk-medal">${MEDALS[i]}</span>
+      <div class="wk-info"><div class="wk-name name-${name.toLowerCase()}">${name}</div>
+      <div class="wk-badges"><span class="stat-badge badge-wins-${name.toLowerCase()}">🏆 ${w[name]} win${w[name]!==1?'s':''}</span><span class="stat-badge badge-games">🎮 ${g[name]} games</span></div></div>
+      <div class="wk-pts" style="color:${NAME_COLOR[name]}">${s[name]}</div>
+    </div>`).join('');
+}
+
+async function resetWeek(){
+  if(!confirm('Reset weekly leaderboard for everyone? Overall scores stay.')) return;
+  const newWeekStart = new Date().toISOString();
+  weekStart = newWeekStart;
+  const saved = await setSetting('week_start', newWeekStart);
+  if(saved){
+    renderWeekly();
+    alert('✅ Week reset for everyone!');
+  } else {
+    renderWeekly();
+    alert('⚠️ Reset locally but could not sync. Check connection.');
+  }
+}
+
+function updateManualRows(){
+  const tie = document.getElementById('manualTie').value;
+  const map = {none:['10 pts','6 pts','0 pts'],tie1:['8 pts','8 pts','0 pts'],tie2:['10 pts','3 pts','3 pts'],tieAll:['7 pts','7 pts','7 pts']};
+  const l = map[tie]||map.none;
+  document.getElementById('mpts1').textContent = l[0];
+  document.getElementById('mpts2').textContent = l[1];
+  document.getElementById('mpts3').textContent = l[2];
+  document.getElementById('mrow3').style.display = tie==='tie2'?'none':'flex';
+}
+
+function showManualErr(msg){ const e=document.getElementById('manualErr'); e.textContent=msg; e.style.display=msg?'block':'none'; }
+
+async function saveManual(){
+  const game = document.getElementById('manualGame').value;
+  const tie = document.getElementById('manualTie').value;
+  const n1 = document.getElementById('mp1').value;
+  const n2 = document.getElementById('mp2').value;
+  const n3raw = document.getElementById('mp3').value;
+  showManualErr('');
+  if(!game){ showManualErr('Please select a game.'); return; }
+  if(!n1||!n2){ showManualErr('Please select 1st and 2nd place.'); return; }
+  if(tie==='none'&&!n3raw){ showManualErr('Please select 3rd place.'); return; }
+  // For tie2: auto-assign missing player as 3rd (gets 3pts)
+  let n3 = n3raw;
+  if(tie==='tie2' && !n3) n3 = MEMBERS.find(m => m!==n1 && m!==n2) || null;
+  const allPicked = [n1,n2,n3].filter(Boolean);
+  if(new Set(allPicked).size !== allPicked.length){ showManualErr('Each player can only appear once!'); return; }
+  const date = getUploadDateStr();
+  const players = [{name:n1},{name:n2}];
+  if(n3) players.push({name:n3});
+  const newRec = {id:Date.now(), game, date, tie, players};
+  try {
+    document.querySelector('.manual-save-btn').textContent = 'Saving...';
+    await dbInsert(newRec);
+    records.push(newRec);
+    renderAll(); checkTodayUploads();
+    document.getElementById('manualGame').value='';
+    document.getElementById('manualTie').value='none';
+    document.getElementById('mp1').value='';
+    document.getElementById('mp2').value='';
+    document.getElementById('mp3').value='';
+    updateManualRows();
+    const suc = document.getElementById('manualSuccess');
+    suc.style.display='block';
+    setTimeout(()=>suc.style.display='none',3000);
+  } catch(e) {
+    showManualErr('Could not save. Check your connection.');
+  } finally {
+    document.querySelector('.manual-save-btn').textContent = 'Save for everyone 🎯';
+  }
+}
+
+function parsePastedScore(){
+  const text = document.getElementById('pasteScore').value.trim();
+  const errEl = document.getElementById('pasteErr');
+  errEl.style.display = 'none';
+
+  if(!text){ errEl.textContent = 'Please paste your LinkedIn score first.'; errEl.style.display = 'block'; return; }
+
+  // Detect game from text
+  let game = null;
+  if(text.includes('Queens') || text.includes('👑')) game = 'Queens';
+  else if(text.includes('Tango') || text.includes('🌙')) game = 'Tango';
+  else if(text.includes('Zip') || text.includes('⚡')) game = 'Zip';
+  else if(text.includes('Patches')) game = 'Patches';
+  else if(text.includes('Mini Sudoku') || text.includes('Sudoku')) game = 'Mini Sudoku';
+
+  if(!game){ errEl.textContent = 'Could not detect game name. Make sure you copied the full score.'; errEl.style.display = 'block'; return; }
+
+  // Check if already uploaded
+  const uploadDate = getUploadDateStr();
+  const uploadedGames = new Set(records.filter(r => r.date === uploadDate).map(r => r.game));
+  if(uploadedGames.has(game)){
+    errEl.textContent = `${GAME_EMOJI[game]} ${game} is already uploaded for ${uploadDate}!`;
+    errEl.style.display = 'block'; return;
+  }
+
+  // Show preview with game detected, let user fill positions
+  document.getElementById('pasteScore').value = '';
+  showPreview({game, first:'', second:'', third:'', tie:'none'});
+  showErr(`✅ Detected: ${game}! Now fill in the positions below.`);
+  document.getElementById('errMsg').style.color = 'var(--green)';
+  document.getElementById('errMsg').style.background = 'rgba(22,163,74,0.08)';
+  document.getElementById('errMsg').style.borderColor = 'rgba(22,163,74,0.2)';
+}
+
+function renderAll(){ renderPodium(); renderResults(); renderByGame(); renderPoints(); renderSeason(); }
+
+function renderSeason(){
+  const el = document.getElementById('seasonGrid');
+  if(!el) return;
+
+  // Define weeks starting from Apr 12
+  const WEEK_START_BASE = new Date('2026-04-12T00:00:00.000Z');
+  
+  // Figure out how many weeks have data
+  const weekData = [];
+  let weekNum = 0;
+  
+  while(true){
+    weekNum++;
+    const ws = new Date(WEEK_START_BASE);
+    ws.setUTCDate(ws.getUTCDate() + (weekNum-1)*7);
+    const we = new Date(ws);
+    we.setUTCDate(ws.getUTCDate()+7);
+    
+    const wRecs = records.filter(r => {
+      const d = parseDate(r.date);
+      return d >= ws && d < we;
+    });
+    
+    if(wRecs.length === 0 && weekNum > 1) break;
+    if(weekNum > 52) break; // safety
+    
+    // Calculate scores for this week
+    const pts = {Ninad:0, Akshay:0, Ajay:0};
+    const wins = {Ninad:0, Akshay:0, Ajay:0};
+    const games = {Ninad:0, Akshay:0, Ajay:0};
+    
+    wRecs.forEach(rec => {
+      rec.players.forEach((p,i) => {
+        if(!MEMBERS.includes(p.name)) return;
+        pts[p.name] += calcPts(i, rec.tie);
+        games[p.name]++;
+        const isWin = (rec.tie==='tieAll')||(rec.tie==='tie1'&&i<=1)||(rec.tie!=='tie1'&&rec.tie!=='tieAll'&&i===0);
+        if(isWin) wins[p.name]++;
+      });
+    });
+    
+    weekData.push({weekNum, ws, we, pts, wins, games, recCount:wRecs.length});
+    
+    // If this week has no games and it's in the future, stop
+    if(wRecs.length === 0) break;
+  }
+
+  const NAME_COLORS_HEX = {Ninad:'#7C3AED', Akshay:'#16A34A', Ajay:'#DC2626'};
+  const NAME_BG = {Ninad:'rgba(124,58,237,0.08)', Akshay:'rgba(22,163,74,0.08)', Ajay:'rgba(220,38,38,0.08)'};
+  const NAME_BORDER = {Ninad:'rgba(124,58,237,0.25)', Akshay:'rgba(22,163,74,0.25)', Ajay:'rgba(220,38,38,0.25)'};
+
+  el.innerHTML = [...weekData].reverse().map(({weekNum, ws, we, pts, wins, games, recCount}) => {
+    const wsDt = ws.toLocaleDateString('en-GB',{day:'numeric',month:'short'});
+    const weDt = new Date(we.getTime()-86400000).toLocaleDateString('en-GB',{day:'numeric',month:'short'});
+    const maxPts = Math.max(...MEMBERS.map(m=>pts[m]));
+    const winner = maxPts > 0 ? MEMBERS.filter(m=>pts[m]===maxPts) : [];
+    const isEmpty = recCount === 0;
+
+    const playerCells = MEMBERS.map(name => {
+      const isTop = pts[name] === maxPts && maxPts > 0;
+      const col = NAME_COLORS_HEX[name];
+      const bg = NAME_BG[name];
+      const border = NAME_BORDER[name];
+      return `<div class="season-player-cell" style="${isTop?'background:'+bg:''}">
+        <div class="season-player-name" style="color:${col}">${name}</div>
+        ${isEmpty
+          ? `<div style="font-size:13px;color:var(--text3);font-weight:700;padding:8px 0">TBD</div>`
+          : `<div class="season-player-pts" style="color:${col}">${pts[name]}</div>
+             <div class="season-player-pts-label">points</div>
+             <div class="season-player-wins" style="background:${bg};color:${col};border-color:${border}">🏆 ${wins[name]} win${wins[name]!==1?'s':''}</div>
+             <div style="font-size:10px;color:var(--text3);font-weight:700;margin-top:4px">${games[name]} games</div>
+             ${isTop?`<div class="season-winner-badge" style="background:rgba(245,158,11,0.15);color:#B45309;border-color:rgba(245,158,11,0.3)">👑 Week winner</div>`:''}
+          `}
+      </div>`;
+    }).join('');
+
+    return `<div class="season-week">
+      <div class="season-week-header">
+        <div class="season-week-title">Week ${weekNum} ${isEmpty?'<span style="font-size:12px;color:var(--text3);font-weight:700">· Coming soon</span>':''}</div>
+        <div class="season-week-dates">${wsDt} – ${weDt}</div>
+      </div>
+      <div class="season-players-grid">${playerCells}</div>
+    </div>`;
+  }).join('');
+}
+
+init();
+</script>
+</body>
+</html>
